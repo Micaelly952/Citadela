@@ -1,74 +1,118 @@
-// script.js - Funcionalidades para o site Citadela Doces
+// script.js - Interações do site Citadela Doces
 
 document.addEventListener("DOMContentLoaded", function () {
-  // 1. Scroll suave para os links de navegação
-  const navLinks = document.querySelectorAll('nav a');
+
+  /* SCROLL SUAVE NO MENU */
+
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
 
   navLinks.forEach(link => {
-    link.addEventListener('click', function (e) {
+    link.addEventListener("click", function(e){
+
       e.preventDefault();
-      const targetId = this.getAttribute('href');
-      const targetSection = document.querySelector(targetId);
 
-      window.scrollTo({
-        top: targetSection.offsetTop - 70,
-        behavior: 'smooth'
-      });
-    });
-  });
+      const targetId = this.getAttribute("href");
+      const target = document.querySelector(targetId);
 
-  // 2. Efeito de zoom nas imagens dos produtos
-  const productImages = document.querySelectorAll('.card img');
-
-  productImages.forEach(img => {
-    img.addEventListener('mouseenter', function () {
-      this.style.transform = 'scale(1.05)';
-      this.style.transition = 'transform 0.3s ease';
-    });
-
-    img.addEventListener('mouseleave', function () {
-      this.style.transform = 'scale(1)';
-    });
-  });
-
-  // 3. Efeito no header ao rolar a página
-  const header = document.querySelector('header');
-  window.addEventListener('scroll', function () {
-    if (window.scrollY > 50) {
-      header.style.backgroundColor = 'rgba(179, 111, 121, 0.95)';
-      header.style.padding = '10px 20px';
-    } else {
-      header.style.backgroundColor = '#b36f79';
-      header.style.padding = '20px';
-    }
-  });
-
-  // 4. Confirmação ao abrir o WhatsApp
-  const whatsappBtn = document.querySelector('.whatsapp-btn');
-  if (whatsappBtn) {
-    whatsappBtn.addEventListener('click', function (e) {
-      setTimeout(() => {
-        alert('Estamos ansiosos para atender você! Responderemos em breve 😊');
-      }, 1000); // Pequena espera para simular abertura
-    });
-  }
-
-  // 5. Animação sutil nas seções ao aparecer na tela (Intersection Observer)
-  const sections = document.querySelectorAll('section');
-
-  const revealOnScroll = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
+      if(target){
+        window.scrollTo({
+          top: target.offsetTop - 80,
+          behavior: "smooth"
+        });
       }
-    });
-  }, { threshold: 0.1 });
 
-  sections.forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(20px)';
-    section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-    revealOnScroll.observe(section);
+    });
   });
+
+
+
+  /* HEADER DINÂMICO AO ROLAR */
+
+  const header = document.querySelector("header");
+
+  window.addEventListener("scroll", function(){
+
+    if(window.scrollY > 40){
+
+      header.style.boxShadow = "0 6px 20px rgba(0,0,0,0.1)";
+      header.style.background = "rgba(255,255,255,0.95)";
+      header.style.backdropFilter = "blur(6px)";
+
+    }else{
+
+      header.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
+      header.style.background = "white";
+      header.style.backdropFilter = "none";
+
+    }
+
+  });
+
+
+
+  /* ANIMAÇÃO DOS CARDS AO APARECER */
+
+  const cards = document.querySelectorAll(".card");
+
+  const revealCards = new IntersectionObserver((entries) => {
+
+    entries.forEach(entry => {
+
+      if(entry.isIntersecting){
+
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0)";
+
+      }
+
+    });
+
+  }, { threshold: 0.15 });
+
+
+
+  cards.forEach(card => {
+
+    card.style.opacity = "0";
+    card.style.transform = "translateY(30px)";
+    card.style.transition = "all 0.6s ease";
+
+    revealCards.observe(card);
+
+  });
+
+
+
+  /* CONFIRMAÇÃO AO CLICAR NO WHATSAPP */
+
+  const whatsappButtons = document.querySelectorAll('a[href*="wa.me"]');
+
+  whatsappButtons.forEach(btn => {
+
+    btn.addEventListener("click", function(){
+
+      setTimeout(() => {
+
+        alert("Obrigado por entrar em contato com a Citadela Doces 🍫✨");
+
+      }, 600);
+
+    });
+
+  });
+
+
+
+  /* EFEITO PARALLAX SUAVE NO HERO */
+
+  const hero = document.querySelector(".hero");
+
+  window.addEventListener("scroll", () => {
+
+    let offset = window.scrollY * 0.3;
+
+    hero.style.backgroundPosition = `center ${offset}px`;
+
+  });
+
 });
